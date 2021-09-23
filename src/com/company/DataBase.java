@@ -1,10 +1,9 @@
 package com.company;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.SortedSet;
+import javafx.util.Pair;
+
+import java.util.*;
 
 public class DataBase {
 
@@ -68,9 +67,35 @@ public class DataBase {
                 }
             }
         }
-        System.out.println("Driver results:");
-        System.out.println(drivers);
-        System.out.println("Team results:");
-        System.out.println(teams);
+        if (drivers.size() == 0)
+            System.out.println("No results for the query:(");
+        else{
+            System.out.println("Driver results:");
+            prettyPrint(sortMap(drivers));
+        }
+        if (teams.size() == 0)
+            System.out.println("No results for the query:(");
+        else{
+            System.out.println("Team results:");
+            prettyPrint(sortMap(teams));
+        }
+    }
+
+    private List<Pair<Integer, String>> sortMap(HashMap<String, Double> map){
+        ArrayList<Pair<Integer, String>> sorted = new ArrayList<>();
+        map.forEach((k,v) -> sorted.add(new Pair((int)Math.round(v),
+                k)));
+        Collections.sort(sorted, new Comparator<Pair<Integer, String>>() {
+            @Override
+            public int compare(Pair<Integer, String> lhs, Pair<Integer, String> rhs) {
+                return lhs.getKey() > rhs.getKey()?-1:1;
+            }
+        });
+        return sorted;
+    }
+    private void prettyPrint(List<Pair<Integer, String>> list){
+        for (int i = 1 ; i < list.size()+1;i++){
+            System.out.println(i + ": " + list.get(i-1).getValue() + " score: " + list.get(i-1).getKey());
+        }
     }
 }
