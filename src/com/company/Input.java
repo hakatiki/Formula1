@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Input {
     // I could use an array but with a hashmap its more readable imo
-    HashMap<String, List<String>> transitions = new HashMap<String, List<String>>(){{
+    private static final HashMap<String, List<String>> transitions = new HashMap<String, List<String>>(){{
         put("START_STATE", Arrays.asList("RACE"));
         put("RACE", Arrays.asList("RESULT", "FASTEST", "FINISH"));
         put("RESULT", Arrays.asList("RESULT", "FINISH", "FASTEST"));
@@ -17,7 +17,7 @@ public class Input {
         put("EXIT", Arrays.asList());
 
     }};
-    HashMap<String, Integer> argCount = new HashMap<String, Integer>(){{
+    private static final HashMap<String, Integer> argCount = new HashMap<String, Integer>(){{
         put("START_STATE", 1);
         put("RACE", 5);
         put("RESULT", 4);
