@@ -68,5 +68,9 @@ public class DataBase {
                 }
             }
         }
+        System.out.println("Driver results:");
+        System.out.println(drivers);
+        System.out.println("Team results:");
+        System.out.println(teams);
     }
 }
