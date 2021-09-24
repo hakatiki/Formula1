@@ -10,9 +10,15 @@ public class MyQuery {
 
 
     private String year;
-    private int rank = -1; // Something invalid but easy to spot
+    private int rank = invalidMonth; // Something invalid but easy to spot
+
+
+
+    private Boolean yearQuery = false;
     private String system;
     private List<Integer> points = new ArrayList<Integer>();
+
+    private static final int invalidMonth = -1;
     private static final HashMap<String, List<Integer>> pointSystems = new HashMap<String, List<Integer>>(){{
         put("CLASSIC", Arrays.asList(10, 6, 4, 3, 2, 1));
         put("MODERN", Arrays.asList(10, 8, 6, 5, 4, 3, 2, 1));
@@ -22,8 +28,8 @@ public class MyQuery {
 
     public MyQuery(List<String> query, List<String> point){
         this.year = query.get(1);
-        this.rank = query.size()==3? Integer.valueOf(query.get(2)): -1;
-
+        this.yearQuery = query.size() != 3;
+        this.rank = !this.yearQuery? Integer.valueOf(query.get(2)): invalidMonth;
         this.system = point.get(1);
         this.points = pointSystems.get(this.system);
     }
@@ -43,5 +49,9 @@ public class MyQuery {
 
     public List<Integer> getPoints() {
         return points;
+    }
+
+    public Boolean getYearQuery() {
+        return yearQuery;
     }
 }

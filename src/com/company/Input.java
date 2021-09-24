@@ -6,44 +6,51 @@ import java.util.*;
 
 public class Input {
     // I could use an array but with a hashmap its more readable imo
+    private final String seperator = ";";
     private static final HashMap<String, List<String>> transitions = new HashMap<String, List<String>>(){{
-        put("START_STATE", Arrays.asList("RACE"));
-        put("RACE", Arrays.asList("RESULT", "FASTEST", "FINISH"));
-        put("RESULT", Arrays.asList("RESULT", "FINISH", "FASTEST"));
-        put("FASTEST", Arrays.asList("FINISH"));
-        put("FINISH", Arrays.asList("RACE", "QUERY"));
-        put("QUERY", Arrays.asList("POINT"));
-        put("POINT", Arrays.asList("QUERY", "EXIT"));
-        put("EXIT", Arrays.asList());
+        put("START_STATE",  Arrays.asList("RACE"));
+        put("RACE",         Arrays.asList("RESULT", "FASTEST", "FINISH"));
+        put("RESULT",       Arrays.asList("RESULT", "FINISH", "FASTEST"));
+        put("FASTEST",      Arrays.asList("FINISH"));
+        put("FINISH",       Arrays.asList("RACE", "QUERY"));
+        put("QUERY",        Arrays.asList("POINT"));
+        put("POINT",        Arrays.asList("QUERY", "EXIT"));
+        put("EXIT",         Arrays.asList());
 
     }};
     private static final HashMap<String, Integer> argCount = new HashMap<String, Integer>(){{
-        put("START_STATE", 1);
-        put("RACE", 5);
-        put("RESULT", 4);
-        put("FASTEST", 3);
-        put("FINISH", 1);
-        put("QUERY",2);
-        put("POINT", 2);
-        put("EXIT", 1);
+        put("START_STATE",  1);
+        put("RACE",         5);
+        put("RESULT",       4);
+        put("FASTEST",      3);
+        put("FINISH",       1);
+        put("QUERY",        2);
+        put("POINT",        2);
+        put("EXIT",         1);
 
     }};
-
+    private static final List<String> multipliers = new ArrayList<String>() {
+        {
+            add("0");
+            add("1");
+            add("0.5");
+            add("2");
+        }
+    };
     public List<List<String>> readCSV(String path){
         List<List<String>> list = new LinkedList<>(); // Since we will add a lot of stuff -> fester
         try{
             BufferedReader csvReader = new BufferedReader(new FileReader(path));
             String row;
             while ((row = csvReader.readLine()) != null) {
-                String[] data = row.split(";");
+                if (row.equals(""))
+                    continue;
+                String[] data = row.split(seperator);
                 list.add(new LinkedList<String>(Arrays.asList(data)));
             }
             csvReader.close();
-        } catch (FileNotFoundException e) {
-            // TODO: ADD OUTPUT FOR THIS
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Please give me a valid path:(\n");
         }
         return list;
     }
@@ -59,25 +66,22 @@ public class Input {
             String command = row.get(0);
             List<String> validCommands = transitions.get(state);
             if (!validCommands.contains(command)){
-                // TODO: ERROR Invalid command transition
-                System.out.println("ERROR Invalid command transition");
+                System.out.println("ERROR Invalid command transition. These commands can never follow each other:");
                 System.out.println(state +" -> "+ command + " is invalid!");
-                System.out.println( "The error is on line: " + String.valueOf(i+1));
+                System.out.println( "The error is on line: " + (i + 1));
                 return false;
             }
 
             ///////////////FINNISH///////////////////////
             if (command.equals("FINISH")){
                 if (command.equals(state)){
-                    // TODO: ERROR more then one finnished
                     System.out.println("ERROR more then one FINISH");
-                    System.out.println( "The error is on line: " + String.valueOf(i+1));
+                    System.out.println( "The error is on line: " + (i + 1));
                     return false;
                 }
                 if (resultCounter < 10){
-                    // TODO: ERROR not enough results
                     System.out.println("ERROR not enough RESULTs before FINNISH command");
-                    System.out.println( "The error is on line: " + String.valueOf(i+1));
+                    System.out.println( "The error is on line: " + (i + 1));
                     return false;
                 }
                 else
@@ -87,16 +91,21 @@ public class Input {
             resultCounter += command.equals("RESULT")?1:0;
 
             ///////////////ARG COUNT///////////////////////
-            if (argCount.get(command)!= row.size()){
-                if (!(command.equals("QUERY")&& row.size()==3)){
-                    // TODO: ERROR not enough arguments
+            if (argCount.get(command)!= row.size())
+                if (!(command.equals("QUERY")&& row.size()==3)) {
                     System.out.println("ERROR not enough arguments");
-                    System.out.println( "The error is on line: " + String.valueOf(i+1));
+                    System.out.println("The error is on line: " + (i + 1));
                     return false;
                 }
-
+            ///////////////MULTIPLIER VALIDATION//////////
+            if (row.get(0).equals("RACE")){
+                String multiplier = row.get(4);
+                if (!multipliers.contains(multiplier)){
+                    System.out.println("ERROR invalid multiplier");
+                    System.out.println("The error is on line: " + (i + 1));
+                    return false;
+                }
             }
-
             state = command;
         }
         return true;

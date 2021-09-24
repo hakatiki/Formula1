@@ -7,12 +7,14 @@ public class Race {
 
 
     private String name;
-    private String year; // Could be int this is easier to implement rn
-    private float multiplier;
-    private int rank;
+    private String year;        // Could be int this is easier to implement rn
+    private float multiplier;   // Score multiplier
+    private int rank;           // This is the ..th race of the season
 
     private List<Result> results =  new ArrayList<Result>();
-    private Fastest fastest;
+    private String fastestRacer;
+    private String fastestTeam;
+
 
     public Race (List<String> race, List<List<String>> other){
         this.year = race.get(1);
@@ -23,8 +25,10 @@ public class Race {
             List<String> current = other.get(i);
             if (current.get(0).equals("RESULT"))
                 results.add(new Result(current));
-            else
-                fastest = new Fastest(current);
+            else if (current.get(0).equals("FASTEST")){
+                fastestRacer = current.get(1);
+                fastestTeam = current.get(2);
+            }
         }
     }
     public String getName() {
@@ -47,8 +51,12 @@ public class Race {
         return results;
     }
 
-    public Fastest getFastest() {
-        return fastest;
+    public String getFastestRacer() {
+        return fastestRacer;
+    }
+
+    public String getFastestTeam() {
+        return fastestTeam;
     }
 
 }
