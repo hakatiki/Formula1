@@ -6,12 +6,12 @@ import java.util.List;
 public class Race {
 
 
-    private String name;
-    private String year;        // Could be int this is easier to implement rn
-    private float multiplier;   // Score multiplier
-    private int rank;           // This is the ..th race of the season
+    private final String name;
+    private final String year;        // Could be int this is easier to implement rn
+    private final float multiplier;   // Score multiplier
+    private final int rank;           // This is the ..th race of the season
 
-    private List<Result> results =  new ArrayList<Result>();
+    private final List<Result> results =  new ArrayList<Result>();
     private String fastestRacer;
     private String fastestTeam;
 
@@ -19,13 +19,12 @@ public class Race {
     public Race (List<String> race, List<List<String>> other){
         this.year = race.get(1);
         this.name = race.get(2);
-        this.rank = Integer.valueOf(race.get(3));
+        this.rank = Integer.parseInt(race.get(3));
         this.multiplier = Float.parseFloat(race.get(4));
-        for (int i = 0; i < other.size();i++){
-            List<String> current = other.get(i);
+        for (List<String> current : other) {
             if (current.get(0).equals("RESULT"))
                 results.add(new Result(current));
-            else if (current.get(0).equals("FASTEST")){
+            else if (current.get(0).equals("FASTEST")) {
                 fastestRacer = current.get(1);
                 fastestTeam = current.get(2);
             }

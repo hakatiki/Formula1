@@ -5,8 +5,6 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class Input {
-    // I could use an array but with a hashmap its more readable imo
-    private final String seperator = ";";
     private static final HashMap<String, List<String>> transitions = new HashMap<String, List<String>>(){{
         put("START_STATE",  Arrays.asList("RACE"));
         put("RACE",         Arrays.asList("RESULT", "FASTEST", "FINISH"));
@@ -18,6 +16,7 @@ public class Input {
         put("EXIT",         Arrays.asList());
 
     }};
+    // TODO this to list maybe
     private static final HashMap<String, Integer> argCount = new HashMap<String, Integer>(){{
         put("START_STATE",  1);
         put("RACE",         5);
@@ -25,7 +24,7 @@ public class Input {
         put("FASTEST",      3);
         put("FINISH",       1);
         put("QUERY",        2);
-        put("POINT",        2);
+        put("POINT",        2); // Because of this
         put("EXIT",         1);
 
     }};
@@ -45,6 +44,8 @@ public class Input {
             while ((row = csvReader.readLine()) != null) {
                 if (row.equals(""))
                     continue;
+                // I could use an array but with a hashmap its more readable imo
+                String seperator = ";";
                 String[] data = row.split(seperator);
                 list.add(new LinkedList<String>(Arrays.asList(data)));
             }

@@ -5,13 +5,13 @@ import java.util.List;
 public class Result {
 
 
-    private String racerName;
-    private String teamName;
-    private int placement;
+    private final String racerName;
+    private final String teamName;
+    private final int placement;
 
 
     public Result (List<String> list){
-        this.placement =  Integer.valueOf(list.get(1));
+        this.placement =  Integer.parseInt(list.get(1));
         this.racerName =  list.get(2);
         this.teamName =  list.get(3);
     }

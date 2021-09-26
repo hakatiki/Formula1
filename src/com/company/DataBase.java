@@ -104,8 +104,13 @@ public class DataBase {
         System.out.println("\n");
     }
     private void prettyPrint(List<Pair<Integer, String>> list){
+        int placement = 0;
+        int previous =  Integer.MIN_VALUE;
         for (int i = 1 ; i < list.size()+1;i++){
-            System.out.println(i + ": " + list.get(i-1).getValue() + "\tscore: " + list.get(i-1).getKey());
+            int currentScore = list.get(i-1).getKey();
+            placement +=  currentScore == previous? 0:1;
+            System.out.println(placement + ". : " + list.get(i-1).getValue() + " with a score of: " + currentScore);
+            previous = currentScore;
         }
     }
     // Pointless func

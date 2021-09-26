@@ -9,13 +9,13 @@ import java.util.List;
 public class MyQuery {
 
 
-    private String year;
+    private final String year;
     private int rank = invalidMonth; // Something invalid but easy to spot
 
 
 
     private Boolean yearQuery = false;
-    private String system;
+    private final String system;
     private List<Integer> points = new ArrayList<Integer>();
 
     private static final int invalidMonth = -1;
@@ -29,7 +29,7 @@ public class MyQuery {
     public MyQuery(List<String> query, List<String> point){
         this.year = query.get(1);
         this.yearQuery = query.size() != 3;
-        this.rank = !this.yearQuery? Integer.valueOf(query.get(2)): invalidMonth;
+        this.rank = !this.yearQuery? Integer.parseInt(query.get(2)): invalidMonth;
         this.system = point.get(1);
         this.points = pointSystems.get(this.system);
     }
