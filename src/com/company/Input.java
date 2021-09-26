@@ -1,7 +1,6 @@
 package com.company;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Input {
@@ -16,16 +15,15 @@ public class Input {
         put("EXIT",         Arrays.asList());
 
     }};
-    // TODO this to list maybe
-    private static final HashMap<String, Integer> argCount = new HashMap<String, Integer>(){{
-        put("START_STATE",  1);
-        put("RACE",         5);
-        put("RESULT",       4);
-        put("FASTEST",      3);
-        put("FINISH",       1);
-        put("QUERY",        2);
-        put("POINT",        2); // Because of this
-        put("EXIT",         1);
+    private static final HashMap<String, List<Integer>> argCount = new HashMap<String, List<Integer>>(){{
+        put("START_STATE",  Arrays.asList(1));
+        put("RACE",         Arrays.asList(5));
+        put("RESULT",       Arrays.asList(4));
+        put("FASTEST",      Arrays.asList(3));
+        put("FINISH",       Arrays.asList(1));
+        put("QUERY",        Arrays.asList(2,3));
+        put("POINT",        Arrays.asList(2));
+        put("EXIT",         Arrays.asList(1));
 
     }};
     private static final List<String> multipliers = new ArrayList<String>() {
@@ -58,7 +56,7 @@ public class Input {
     public Boolean validate(List<List<String>> list){
         String state = "START_STATE";
         int resultCounter = 0;
-        for (int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             List<String> row = list.get(i);
             ///////////////EMPTY ROW///////////////////////
             if (row.get(0).equals(""))
@@ -66,38 +64,36 @@ public class Input {
             ///////////////TRANSITIONS/////////////////////
             String command = row.get(0);
             List<String> validCommands = transitions.get(state);
-            if (!validCommands.contains(command)){
+            if (!validCommands.contains(command)) {
                 System.out.println("ERROR Invalid command transition. These commands can never follow each other:");
-                System.out.println(state +" -> "+ command + " is invalid!");
-                System.out.println( "The error is on line: " + (i + 1));
+                System.out.println(state + " -> " + command + " is invalid!");
+                System.out.println("The error is on line: " + (i + 1));
                 return false;
             }
 
             ///////////////FINNISH///////////////////////
-            if (command.equals("FINISH")){
-                if (command.equals(state)){
+            if (command.equals("FINISH")) {
+                if (command.equals(state)) {
                     System.out.println("ERROR more then one FINISH");
-                    System.out.println( "The error is on line: " + (i + 1));
-                    return false;
-                }
-                if (resultCounter < 10){
-                    System.out.println("ERROR not enough RESULTs before FINNISH command");
-                    System.out.println( "The error is on line: " + (i + 1));
-                    return false;
-                }
-                else
-                    resultCounter = 0;
-            }
-            ///////////////10 RESULT///////////////////////
-            resultCounter += command.equals("RESULT")?1:0;
-
-            ///////////////ARG COUNT///////////////////////
-            if (argCount.get(command)!= row.size())
-                if (!(command.equals("QUERY")&& row.size()==3)) {
-                    System.out.println("ERROR not enough arguments");
                     System.out.println("The error is on line: " + (i + 1));
                     return false;
                 }
+                if (resultCounter < 10) {
+                    System.out.println("ERROR not enough RESULTs before FINNISH command");
+                    System.out.println("The error is on line: " + (i + 1));
+                    return false;
+                } else
+                    resultCounter = 0;
+            }
+            ///////////////10 RESULT///////////////////////
+            resultCounter += command.equals("RESULT") ? 1 : 0;
+
+            ///////////////ARG COUNT///////////////////////
+            if (!argCount.get(command).contains(row.size())) {
+                System.out.println("ERROR not enough arguments");
+                System.out.println("The error is on line: " + (i + 1));
+                return false;
+            }
             ///////////////MULTIPLIER VALIDATION//////////
             if (row.get(0).equals("RACE")){
                 String multiplier = row.get(4);
