@@ -3,6 +3,10 @@ package com.company;
 import java.io.*;
 import java.util.*;
 
+/// Disclaimer:
+/// This is a way of doing this. I would create a context free grammar and use that to
+/// check the input. Way more flexible and less code too.
+
 public class Input {
     private static final HashMap<String, List<String>> transitions = new HashMap<String, List<String>>(){{
         put("START_STATE",  Arrays.asList("RACE"));
