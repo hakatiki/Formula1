@@ -8,26 +8,34 @@ import java.util.*;
 /// check the input. Way more flexible and less code too.
 
 public class Input {
+    private static final String START_STATE= "START_STATE";
+    private static final String       RACE =         "RACE";
+    private static final String     RESULT =         "RESULT";
+    private static final String    FASTEST =         "FASTEST";
+    private static final String     FINISH =         "FINISH";
+    private static final String      QUERY =         "QUERY";
+    private static final String      POINT =         "POINT";
+    private static final String EXIT       =         "EXIT";
     private static final HashMap<String, List<String>> transitions = new HashMap<String, List<String>>(){{
-        put("START_STATE",  Arrays.asList("RACE"));
-        put("RACE",         Arrays.asList("RESULT", "FASTEST", "FINISH"));
-        put("RESULT",       Arrays.asList("RESULT", "FINISH", "FASTEST"));
-        put("FASTEST",      Arrays.asList("FINISH"));
-        put("FINISH",       Arrays.asList("RACE", "QUERY"));
-        put("QUERY",        Arrays.asList("POINT"));
-        put("POINT",        Arrays.asList("QUERY", "EXIT"));
-        put("EXIT",         Arrays.asList());
+        put( START_STATE, Arrays.asList("RACE"));
+        put(       RACE , Arrays.asList("RESULT", "FASTEST", "FINISH"));
+        put(     RESULT , Arrays.asList("RESULT", "FINISH", "FASTEST"));
+        put(    FASTEST , Arrays.asList("FINISH"));
+        put(     FINISH , Arrays.asList("RACE", "QUERY"));
+        put(      QUERY , Arrays.asList("POINT"));
+        put(      POINT , Arrays.asList("QUERY", "EXIT"));
+        put( EXIT       , Arrays.asList());
 
     }};
     private static final HashMap<String, List<Integer>> argCount = new HashMap<String, List<Integer>>(){{
-        put("START_STATE",  Arrays.asList(1));
-        put("RACE",         Arrays.asList(5));
-        put("RESULT",       Arrays.asList(4));
-        put("FASTEST",      Arrays.asList(3));
-        put("FINISH",       Arrays.asList(1));
-        put("QUERY",        Arrays.asList(2,3));
-        put("POINT",        Arrays.asList(2));
-        put("EXIT",         Arrays.asList(1));
+        put(START_STATE,  Arrays.asList(1));
+        put(      RACE ,  Arrays.asList(5));
+        put(    RESULT ,  Arrays.asList(4));
+        put(   FASTEST ,  Arrays.asList(3));
+        put(    FINISH ,  Arrays.asList(1));
+        put(     QUERY ,  Arrays.asList(2,3));
+        put(     POINT ,  Arrays.asList(2));
+        put(EXIT       ,  Arrays.asList(1));
 
     }};
     private static final List<String> multipliers = new ArrayList<String>() {
